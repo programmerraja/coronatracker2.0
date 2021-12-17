@@ -1,0 +1,10 @@
+:root{
+	--primary-color:#2196f3;
+	--secondary-color:white;
+}
+body{
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  position: relative;
+}
