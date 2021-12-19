@@ -1,9 +1,9 @@
 body
 {
-	background-color:#03a9f4;
-	animation-name:fadein;
+	background-color:white;
+	/* animation-name:fadein; */
 	animation-delay:1.3s;
-	opacity:0;
+	/* opacity:0; */
 	animation-fill-mode: forwards;
 	animation-duration: 3s;
 }
@@ -17,13 +17,12 @@ body
 }
 .search_container input[type='text'],
 .search_container input[type='date']
-
 {
-	border-bottom: .1rem solid white;
+	border-bottom: .1rem solid black;
 	border-top: 0;
 	border-left:0;
 	border-right: 0;
-	background-color:#03a9f4;
+	background-color:white;
 	outline: none !important;
 	color:black;
 	margin-left: 2rem;
@@ -33,17 +32,6 @@ body
 
 }
 
-.search_container input[type="button"]
-{
-	 height: 35px;
-    font-weight: 600;
-    background: orange;
-    width: 137px;
-    border: 0;
-    outline: 0;
-    border-radius: 10px;
-    margin: 20px;
-}
 .search_container input[type='button']:hover
 {
 	background:#ec9900;
@@ -68,7 +56,7 @@ body
 	width: 100%;
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: center;
+	justify-content: space-around;
 	animation-name:fadein;
 	animation-delay:3s;
 }
@@ -116,6 +104,9 @@ body
 	justify-content: space-between;
 	flex-wrap: wrap;
 	padding: 1rem;
+}
+.filter_option{
+	border: 1px solid black;
 }
 @keyframes fadein {
 	0% {

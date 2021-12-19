@@ -15,6 +15,9 @@ import SquareLoader from './components/SquareLoader';
 
 //pages
 import Home from './pages/Home';
+import StateDetail from './pages/StateDetail';
+
+import NotFound from './pages/NotFound';
 
 import API from "./utils/API";
 
@@ -30,8 +33,7 @@ function App(props) {
       <Nav />
         <Switch>
           <Route exact path="/" component={Home}/>
-          
-          
+          <Route exact path="/:STATE_NAME" component={StateDetail}/>
           <Route component={NotFound}/>
         </Switch>
         <Footer/>

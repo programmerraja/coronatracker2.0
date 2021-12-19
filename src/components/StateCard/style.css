@@ -2,7 +2,7 @@
 {
     display: flex;
     flex-direction: column;
-    width: 90%;
+    width: 350px;
     font-size: 15px;
     margin: 1rem;
     line-height: 24px;
@@ -13,7 +13,32 @@
     box-shadow: rgb(196 199 204) 0px 0px 2px;
     background-color: rgb(255, 255, 255);
 }
-
+.state_card-head{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:space-between;
+    align-items: center;
+}
+.state_card-select{
+    width: 100px;
+    height:25px;
+}
+.state_body-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+.state_card-total{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.state_card_link{
+    cursor:pointer;
+}
 /* media query for mobile phones */
 @media (max-width:700px) {
     .state_card{

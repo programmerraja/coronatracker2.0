@@ -4,8 +4,8 @@ import {useHistory,Link } from "react-router-dom";
 
 import "./style.css";
 
-import logo from "../../img/logo.png";
-import userImg from "../../img/user.svg";
+// import logo from "../../img/logo.png";
+// import userImg from "../../img/user.svg";
 
 
 function Nav({user}) {
@@ -23,11 +23,11 @@ function Nav({user}) {
 
   let nav_link;
 
-
+  // <img src={logo}/> <p>Corona Tracker</p>  
   return ( <div className="nav">
               <div className="nav-brand">
                     <Link to="/">  
-                        <img src={logo}/> <p>Corona Tracker</p>                   
+                            <p><i class="fas fa-shield-virus"></i>Corona Tracker<i class="fas fa-shield-virus"></i></p>              
                     </Link>
               </div>
 
