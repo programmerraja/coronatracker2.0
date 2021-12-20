@@ -33,6 +33,7 @@ function App(props) {
       <Nav />
         <Switch>
           <Route exact path="/" component={Home}/>
+          <Route exact path="/coronatracker2.0" component={Home}/>
           <Route exact path="/:STATE_NAME" component={StateDetail}/>
           <Route component={NotFound}/>
         </Switch>

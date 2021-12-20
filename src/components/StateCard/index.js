@@ -55,38 +55,31 @@ function StateCard({
         <div className="state_card">
             <div className="state_card-head">
                 <p>{state_name}</p>
-                <select className="state_card-select" 
-                          onChange={(e)=>{
-                              setSelectedDistrict(e.target.value);
-                              ChangeToDistrictData(e.target.value);
-                              }}>
-                     <option value="none">None</option>
-                    {
+                { districts && (
+                    <select className="state_card-select" 
+                            onChange={(e)=>{
+                                setSelectedDistrict(e.target.value);
+                                ChangeToDistrictData(e.target.value);
+                                }}>
+                        <option value="none">None</option>
+                        {
+                            
+                            districts && Object.keys(districts).map((district_name)=>{
+                                return(<option value={district_name} selected={selected_district===district_name?true:false}>{district_name}</option>)
+                            })
                         
-                         districts && Object.keys(districts).map((district_name)=>{
-                            return(<option value={district_name} selected={selected_district===district_name?true:false}>{district_name}</option>)
-                        })
-                    
-                    }
-                </select>
+                        }
+                    </select>)
+                }
             </div>
         <div className="state_body-wrapper">
             <div className="state_card-total">
-                <p>Total</p>
                 <p><i class="fas fa-check-circle" style={{color:"brown"}}></i>Confirmed: {d_confirmed}</p>
                 <p><i class="fas fa-heartbeat" style={{color:"green"}}></i>Recovered: {d_recovered}</p>
                 <p><i class="fas fa-exclamation-circle" style={{color:"red"}}></i>Deceased: {d_deceased}</p>
             </div>
-            <div className="state_card_link">
-                <div> 
-                <i class="fas fa-greater-than"  
-                   onClick={()=>{
-                    storeToLocalStorage(state_short_name)
-                    }
-                }></i>
-                </div>
-            </div>
         </div>
+        { state_short_name && <p className="state_card-link"   onClick={()=>{storeToLocalStorage(state_short_name)}}>Know More</p>}
         </div>
     </>);
 

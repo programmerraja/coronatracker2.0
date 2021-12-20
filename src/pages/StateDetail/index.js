@@ -3,13 +3,13 @@ import {useParams } from "react-router-dom";
 
 import SquareLoader from "../../components/SquareLoader";
 import Table from "../../components/Table";
+import StateCard from "../../components/StateCard";
 import NoResultCard from "../../components/NoResultCard";
 
 import API from "../../utils/API";
 import errorHandler from "../../utils/errorHandler";
 
 import "./style.css";
-
 
 function StateDetail() {
 
@@ -21,7 +21,7 @@ function StateDetail() {
     const[filter_date,setFilterDate]=useState("");
     const[is_find,setIsFind]=useState(true)
     const[msg,setMsg]=useState("");
-    const [loading,setLoading]=useState(true);
+    const[loading,setLoading]=useState(true);
 
     const { STATE_NAME } = useParams();
 
@@ -41,6 +41,7 @@ function StateDetail() {
         setLoading(false);
         console.log(res)
       });
+      //parsing data form local storage
       let temp_district=JSON.parse(localStorage.getItem("districts"));
       let temp_population=JSON.parse(localStorage.getItem("poulation"));
       if(temp_district){
@@ -52,10 +53,10 @@ function StateDetail() {
   },[])
 
   const filterStateByDate=(search_date)=>{
+    //checking if the date between 
     if(new Date(search_date)>new Date("2020-03-26") && new Date("2020-10-11")>new Date(search_date)){
       let temp_state_data={...state_data};
-      debugger;
-        for(const date in state_data[STATE_NAME]["dates"]){
+      for(const date in state_data[STATE_NAME]["dates"]){
           if(date===search_date){
             temp_state_data[STATE_NAME]["dates"][date].isHide=false;
           }
@@ -70,24 +71,8 @@ function StateDetail() {
       setMsg("Plse try the date between 2020-03-26 and 2020-10-11")
     }
   }
-  const ChangeToDistrictData=(district_name)=>{
-    for(const name in districts){
-        if(name===district_name){
-           setConfirmed(districts[name].total.confirmed?districts[name].total.confirmed:"Data Not Found")
-           setRecovered(districts[name].total.recovered?districts[name].total.recovered:"Data Not Found")
-           setDeceased(districts[name].total.deceased?districts[name].total.deceased:"Data Not Found")
-        }
-    }
-    //if user select none we need show the state data
-    if(district_name==="none"){
-        setConfirmed(confirmed);
-        setRecovered(recovered);
-        setDeceased(deceased);
-    }
-}
 
-const sortByConfirmed=(states_meta,states_date,key)=>{
-  
+const sortByConfirmed=(states_meta,states_date,key)=>{ 
   for(let i=0;i<states_meta.length;i++){
     for(let j=0;j<states_meta.length;j++){
       if(states_meta[i].delta?.[key[0]]<states_meta[j].delta?.[key[0]]){
@@ -197,11 +182,14 @@ const sortByUserPreference=(sort_by)=>{
                         </select>
                     </div>
                         <div className="state_card-head">
+                        <label className="filter_option-label">
+                               <span>District: </span></label>
                             <select className="state_card-select" 
                                       onChange={(e)=>{
                                           setSelectedDistrict(e.target.value);
+
                                           }}>
-                                <option value="none">None</option>
+                                <option value="none" selected={selected_district==="none"?true:false}>None</option>
                                 {
                                     districts && Object.keys(districts).map((district_name)=>{
                                         return(<option value={district_name} selected={selected_district===district_name?true:false}>{district_name}</option>)
@@ -213,9 +201,14 @@ const sortByUserPreference=(sort_by)=>{
 
 
                   <section className="state_container">
-                    {is_find ?
+                    {(is_find && selected_district==="none") ?
                       <Table state_data={state_data}/>:
-                      (msg &&  <NoResultCard msg={msg}/>)
+                      ((msg && selected_district==="none") && <NoResultCard msg={msg}/>)
+                    }
+                    {
+                      (selected_district!="none" && districts)&& <StateCard confirmed={districts[selected_district]?.total?.confirmed}
+                                                              recovered={districts[selected_district]?.total?.recovered}
+                                                              deceased={districts[selected_district]?.total?.deceased}/>
                     }
                   </section>  
           </>);

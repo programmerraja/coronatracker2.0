@@ -6,7 +6,7 @@ import StateCard from "../../components/StateCard";
 import NoResultCard from "../../components/NoResultCard";
 
 import API from "../../utils/API";
-import STATE_NAMES from "../../utils/state_Names";
+import STATE_NAMES from "../../utils/stateNames";
 
 import errorHandler from "../../utils/errorHandler";
 
@@ -14,23 +14,34 @@ import errorHandler from "../../utils/errorHandler";
 function Home() {
 
     const[states,setStates]=useState({});
+    const[states_time_cache,setStatesCache]=useState(null);
     const[search_state,setSearchState]=useState("");
     const[filter_date,setFilterDate]=useState("");
     const[sort_by,setSortBy]=useState("");
     const[msg,setMsg]=useState("");
+    const[is_valid_date,setValidDate]=useState(true);
   
     const [loading,setLoading]=useState(true);
 
     useEffect(()=>{
-      API.getStates()
-      .then((res)=>{
+      //checking if cache data avaliablle in local storage
+      let states_cache=JSON.parse(localStorage.getItem("states_cache"));
+      if(!states_cache){
+        API.getStates()
+        .then((res)=>{
+            setLoading(false);
+            setStates(res.data); 
+            //storing cache in local 
+            localStorage.setItem("states_cache",JSON.stringify(res.data));
+        })
+        .catch((res)=>{
           setLoading(false);
-          setStates(res.data); 
-      })
-      .catch((res)=>{
+        });
+      }else{
+        //if cache avalible use it
         setLoading(false);
-        
-      });
+        setStates(states_cache);
+      }
   },[])
 
   const filterState=(search_state)=>{
@@ -55,27 +66,55 @@ function Home() {
   const getStatesByDate=(filter_date)=>{
     if(new Date(filter_date)>new Date("2020-03-26") && new Date("2020-10-11")>new Date(filter_date))
     {
-      setLoading(true);
-      API.getStatesByDate()
-        .then((res)=>{
-            setLoading(false);
-            let new_state={}
-            let empty_data={total:{confirmed:"Data Not Found",recovered:"Data Not Found",deceased:"Data Not Found"}}
-            Object.keys(res.data).forEach((state)=>{
-              //if we have data append it else say no data found
-              new_state[state]=res.data[state]["dates"][filter_date]?res.data[state]["dates"][filter_date]:empty_data;
-              //appending districts data to new state
-              new_state[state]["districts"]={...states[state]?.["districts"]}
+      //checking if cache data avaliablle in local storage
+      if(!states_time_cache){
+            setLoading(true);
+            API.getStatesByDate()
+              .then((res)=>{
+                  setLoading(false);
+                  let new_state={}
+                  //for some state no data so we adding empty data with info
+                  let empty_data={total:{confirmed:"Data Not Found",recovered:"Data Not Found",deceased:"Data Not Found"}}
+                  Object.keys(res.data).forEach((state)=>{
+                    //if we have data append it else say no data found
+                    new_state[state]=res.data[state]["dates"][filter_date]?
+                                     res.data[state]["dates"][filter_date]:
+                                     empty_data;
+                    //appending districts data to new state
+                    new_state[state]["districts"]={...states[state]?.["districts"]}
 
-            })
-            setStates(new_state); 
+                  })
+                  setStates(new_state); 
+                  //cannot store the huge data in local storage so we storing on state;
+                  setStatesCache(res.data);
+                  setValidDate(true);
+              })
+              .catch((res)=>{
+                setLoading(false);
+                console.log(res)
+              });
+      }else{
+        //if cache avalible use it 
+        let new_state={}
+        
+        //for some state no data so we adding empty data with info
+        let empty_data={total:{confirmed:"Data Not Found",recovered:"Data Not Found",deceased:"Data Not Found"}}
+        Object.keys(states_time_cache).forEach((state)=>{
+          //if we have data append it else say no data found
+          new_state[state]=states_time_cache[state]["dates"][filter_date]?
+                           states_time_cache[state]["dates"][filter_date]:
+                           empty_data;
+          //appending districts data to new state
+          new_state[state]["districts"]={...states[state]?.["districts"]}
         })
-        .catch((res)=>{
-          setLoading(false);
-          console.log(res)
-        });
+
+        //call the function once the state is updated
+        setStates(new_state); 
+        setValidDate(true);
+        
+      }
     }else{
-      setStates({});
+      setValidDate(false);
       setMsg("Plse try the date between 2020-03-26 and 2020-10-11");
     }
   }
@@ -140,7 +179,6 @@ function Home() {
         let states_names=[];
 
         Object.keys(states).sort().forEach(state_name=>{
-          debugger;
           //for some date there is no confirmed,etc so we appending 0 for it for sorting purpose
           if(states[state_name] && states[state_name]["total"]){
             if(!states[state_name]["total"]){
@@ -248,9 +286,9 @@ function Home() {
 
 
               <section className="state_container">
-                        {(states_card.length>0 && !loading )? 
+                        {(states_card.length>0 && !loading && is_valid_date)? 
                             states_card:
-                            msg && !loading && <NoResultCard msg={msg}/>
+                            !is_valid_date && msg && !loading && <NoResultCard msg={msg}/>
                         }
               </section>
       </>);
