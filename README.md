@@ -36,13 +36,12 @@ Delta, Delta7 stats will be displayed in those pages</li>
  
  ## what are the featurs that i implement my own?
  <ul>
-  <li>Avoided fetching multiple time same data by checking if the data avalible in cache.</li>
- <li>For some states,districts the data is not for that it will shown data not found in UI.</li>
- <li>Optimized state detail page by using pagination to avoid rendering a huge list in same window.</li>
+ <li>For some states anddistricts the data is not avalible for that it will shown data not found in UI.</li>
+ <li>Optimized state detail page by using pagination to avoid rendering a huge list in same page.</li>
  <li>It is responsive</li>
-  <li> Optimized the state card only render the districts in state card if user focus on the selcect html element.</li>
-   <li>Network Error are handled.</li>
-   <li>Checked the performance of the website using light house and got score.</li>
+ <li>Optimized the state card only render the districts in state card if user focus on the selcect html element on state card.</li>
+ <li>Network Error are handled.</li>
+ <li>Checked the performance of the website using light house and improved some it.</li>
 
 <p>For Mobile</p>
 
