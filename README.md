@@ -31,7 +31,7 @@ Delta, Delta7 stats will be displayed in those pages</li>
    <ul>
  <li> Date and sort by and District filters are applicable.</li>
  <li> If No Data match the filter Result not found UI will be shown.</li>
- <li> Data are stored on cache state beacuse the data is more then 5MB.</li>
+ <li> Data are stored on cache state beacuse the data is more then 5MB. so i use react state for caching.</li>
  </ul>
  
  ## what are the featurs that i implement my own?
