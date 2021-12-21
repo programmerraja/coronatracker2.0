@@ -57,22 +57,20 @@ Delta, Delta7 stats will be displayed in those pages</li>
   <li>Code readablity is very much important.</li>
   <li>Avoid unwanted network request try to cache it.</li>
   <li>How to sort nested objects based on some value.</li>
-  <li>How to sort nested objects based on some value.</li>
   <li>Object.keys() function not return in object created order.</li>
-
  </ul>
 
 ## what are the problems i face during the development?
 
  <ul>
-  <li>Object.keys()-> this function not return in object created order which makes me harder find what wrong in my code when i sorting in state detail page i used debugger to find what's the problem then i pass the states_date to table to resolve that issues</li>
-  <li>the json return by API endpoints are too nested which cause me lot of problems excatly i don't remember what but i overcome it some how.
+  <li>Object.keys()-> this function not return in object created order which makes me harder find what wrong in my code when i sorting in state detail page i used debugger to find what's the problem then i pass the states_date to table to resolve that issues.</li>
+
+  <li>the json return by API endpoints are too nested which cause me lot of problems like chaning one states will refelect on other because it is nested both state point to same obj.
   </li>
-  <li>
-  For some state the date is missing which cause me problems while sorting to avoid that i append empty data with 0 value
+  <li>For some state the date is missing which cause me problems while sorting to avoid that i append empty data with 0 value.
   </li>
-  <li>When implementing pagenation i face lot of issues because when user applying the filter it casue me a problem in UI.finally i overcome that by implementing useEffect that runs when user use filter options.</li>
-  <li>When deploying the website in netlify the react router won't work when refresh in page /state/:State_name to avoid that i add _redirects file in public folder .</li>
+  <li>When implementing pagenation i face lot of issues because when user applying the filter it cause me a problem in UI.finally i overcome that by implementing useEffect that runs when user use filter options.</li>
+  <li>When deploying the website in netlify the react router won't work when we refresh in page /state/:State_name. to avoid that i add _redirects file in public folder .</li>
  </ul>
 
 ## website preview
