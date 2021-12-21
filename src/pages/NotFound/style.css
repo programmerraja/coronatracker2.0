@@ -1,0 +1,12 @@
+.notfound_container {
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  width: 90vw;
+  justify-content: center;
+  align-items: center;
+}
+
+.notfound_container h1 {
+  color: var(--primary-color);
+}
