@@ -15,7 +15,7 @@ function StateCard({
   const [d_confirmed, setConfirmed] = useState(confirmed);
   const [d_recovered, setRecovered] = useState(recovered);
   const [d_deceased, setDeceased] = useState(deceased);
-  const [d_districts,setDistricts]=useState({});
+  const [t_districts,setDistricts]=useState({});
   const [selected_district, setSelectedDistrict] = useState("none");
 
   const history = useHistory();
@@ -48,7 +48,7 @@ function StateCard({
       localStorage.setItem("districts", JSON.stringify(districts));
     }
     localStorage.setItem("population", population);
-
+    localStorage.setItem("state_name",state_name);
     history.push(`/state/${state_short_name}`);
   };
   
@@ -73,8 +73,8 @@ function StateCard({
               <option value="none" defaultValue={selected_district}>
                 None
               </option>
-              {d_districts &&
-                Object.keys(d_districts).map((district_name) => {
+              {t_districts &&
+                Object.keys(t_districts).map((district_name) => {
                   return (
                     <option key={district_name} value={district_name}>
                       {district_name}
@@ -86,18 +86,12 @@ function StateCard({
         </div>
         <div className="state_body-wrapper">
             <p>
-              {/* <i className="fas fa-check-circle" style={{ color: "brown" }}></i> */}
               Confirmed: {d_confirmed?d_confirmed:"Data Not Found"}
             </p>
             <p>
-              {/* <i className="fas fa-heartbeat" style={{ color: "green" }}></i> */}
               Recovered: {d_recovered?d_recovered:"Data Not Found"}
             </p>
             <p>
-              {/* <i
-                className="fas fa-exclamation-circle"
-                style={{ color: "red" }}
-              ></i> */}
               Deceased: {d_deceased?d_deceased:"Data Not Found"}
             </p>
         </div>

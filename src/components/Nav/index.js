@@ -9,7 +9,7 @@ function Nav({user}) {
   return ( <div className="nav">
               <div className="nav-brand">
                     <Link to="/">  
-                        <p><i className="fas fa-shield-virus"></i>Corona Tracker<i className="fas fa-shield-virus"></i></p>              
+                        <p>Corona Tracker</p>              
                     </Link>
               </div>
         </div>);

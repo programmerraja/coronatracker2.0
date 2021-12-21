@@ -25,24 +25,22 @@
   width: 200px;
   margin: 15px;
 }
-
+.search_container select {
+  border: 0.1rem solid black;
+}
 .search_container input::placeholder {
   color: black;
 }
-
 .state_container {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  animation-name: fadein;
-  animation-delay: 3s;
 }
 .state_name {
   text-decoration: underline;
 }
 .filter_option {
-  border: 1px solid black;
   background-color: white;
   height: 26px;
 }

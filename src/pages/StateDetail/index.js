@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams ,useHistory} from "react-router-dom";
 
 import SquareLoader from "../../components/SquareLoader";
 import Table from "../../components/Table";
@@ -20,17 +20,25 @@ function StateDetail() {
   const [state_dates, setStateDates] = useState([]);
   const [districts, setDistricts] = useState({});
   const [population, setPopulation] = useState(1);
+  //for filtering
   const [selected_district, setSelectedDistrict] = useState("none");
   const [sort_by, setSortBy] = useState("none");
   const [filter_date, setFilterDate] = useState("");
+  //for UX
   const [is_find, setIsFind] = useState(true);
   const [msg, setMsg] = useState("");
   const [has_error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const { STATE_NAME } = useParams();
+  const history=useHistory();
 
   useEffect(() => {
+    let temp_state_name = localStorage.getItem("state_name");
+    //if user visiting directly this page
+    if(temp_state_name!=STATE_NAMES[STATE_NAME]){
+      history.push("/");
+    }
     API.getStatesByDate()
       .then((data) => {
         setLoading(false);
@@ -82,19 +90,22 @@ function StateDetail() {
     }
   };
 
+  const swap=(states_meta,states_names,i,j)=>{
+    //swapping the meta and state name such that it will in sync
+    let temp = states_meta[i];
+    states_meta[i] = states_meta[j];
+    states_meta[j] = temp;
+
+    temp = states_names[i];
+    states_names[i] = states_names[j];
+    states_names[j] = temp;
+  }
   const sortByConfirmed = (states_meta, state_dates, key) => {
     //used bubble sort used for code readablity
     for (let i = 0; i < states_meta.length; i++) {
       for (let j = 0; j < states_meta.length; j++) {
         if (states_meta[i].delta?.[key[0]] < states_meta[j].delta?.[key[0]]) {
-          //swapping the meta and state name such that it will in sync
-          let temp = states_meta[i];
-          states_meta[i] = states_meta[j];
-          states_meta[j] = temp;
-
-          temp = state_dates[i];
-          state_dates[i] = state_dates[j];
-          state_dates[j] = temp;
+          swap(states_meta,states_names,i,j);
         }
       }
     }
@@ -110,14 +121,7 @@ function StateDetail() {
         let state2_affected =
           (states_meta[j].delta?.confirmed / population) * 100;
         if (state1_affected < state2_affected) {
-          //swapping the meta and state name such that it will in sync
-          let temp = states_meta[i];
-          states_meta[i] = states_meta[j];
-          states_meta[j] = temp;
-
-          temp = state_dates[i];
-          state_dates[i] = state_dates[j];
-          state_dates[j] = temp;
+          swap(states_meta,states_names,i,j);
         }
       }
     }
@@ -216,7 +220,7 @@ function StateDetail() {
               filterStateByDate(e.target.value);
             }}
           />
-
+          
           <div className="filter_option-wrapper">
             <label className="filter_option-label">
               <span>Sort By: </span>
@@ -230,10 +234,10 @@ function StateDetail() {
               defaultValue={sort_by}
             >
               <option value="">None</option>
-              <option value="confirmed-a">Confirmed(asec)based on delta</option>
-              <option value="confirmed-d">Confirmed(desc)based on delta</option>
-              <option value="affected-a">Affected%(asec)based on delta</option>
-              <option value="affected-d">Affected%(descbased on delta)</option>
+              <option value="confirmed-a">Confirmed(a-z)based on delta</option>
+              <option value="confirmed-d">Confirmed(z-a)based on delta</option>
+              <option value="affected-a">Affected%(a-z)based on delta</option>
+              <option value="affected-d">Affected%(z-a)based on delta)</option>
             </select>
           </div>
           <div className="filter_option-wrapper">

@@ -1,9 +1,14 @@
 # coronatracker2.0
+
 It is new version of corona tracker
 <br>
-<p>A new corona tracker build with react used covid19 india API (https://data.covid19india.org/)</p>
+
+## How i build this?
+
+<p>A new corona tracker build with react used covid19 india API (https://data.covid19india.org)</p>
 
 ## what are the featurs implemented on home page?
+
   <ul>
  <li> States Names are Alphabeticaly listed by default.</li>
  <li> Search will filter the states based on name.(If No Data match the filter Result not found UI will be shown)</li>
@@ -32,15 +37,46 @@ Delta, Delta7 stats will be displayed in those pages</li>
  ## what are the featurs that i implement my own?
  <ul>
   <li>Avoided fetching multiple time same data by checking if the data avalible in cache.</li>
- <li> For some states,districts the data is not for that it will shown data not found in UI.</li>
- <li> Optimized state detail page by using pagination to avoid rendering a huge list in same window.</li>
+ <li>For some states,districts the data is not for that it will shown data not found in UI.</li>
+ <li>Optimized state detail page by using pagination to avoid rendering a huge list in same window.</li>
+ <li>It is responsive</li>
+  <li> Optimized the state card only render the districts in state card if user focus on the selcect html element.</li>
+   <li>Network Error are handled.</li>
+   <li>Checked the performance of the website using light house and got score.</li>
+    ![mobile1](img/mobile.png)
+    <p>For Mobile</p>
+    ![desktop](img/desktop.png)
+    <p>For Desktop</p>
  </ul>
  
-## what are problem need to fix ?
-<ul>
- <li>Applied filters should be persisted in local storage for faster
-access. but i am facing some issues on that</li>
+ ## what are the things i learned form it ?
+
+ <ul>
+  <li>Use pagination or onscroll render when we rendering huge list.</li>
+  <li>Re use the code as much as possible.</li>
+  <li>Code readablity is very much important.</li>
+  <li>Avoid unwanted network request try to cache it.</li>
+  <li>How to sort nested objects based on some value.</li>
+  <li>How to sort nested objects based on some value.</li>
+  <li>Object.keys() function not return in object created order.</li>
+
+ </ul>
+
+## what are the problems i face during the development?
+
+ <ul>
+  <li>Object.keys()-> this function not return in object created order which makes me harder find what wrong in my code when i sorting in state detail page i used debugger to find what's the problem then i pass the states_date to table to resolve that issues</li>
+  <li>the json return by API endpoints are too nested which cause me lot of problems excatly i don't remember what but i overcome it some how.
+  </li>
+  <li>
+  For some state the date is missing which cause me problems while sorting to avoid that i append empty data with 0 value
+  </li>
+  <li>When implementing pagenation i face lot of issues because when user applying the filter it casue me a problem in UI.finally i overcome that by implementing useEffect that runs when user use filter options.</li>
+  <li>When deploying the website in netlify the react router won't work when refresh in page /state/:State_name to avoid that i add _redirects file in public folder .</li>
  </ul>
 
 ## website preview
 
+    ![preview1](img/preview1.png)
+
+    ![preview2](img/preview2.png)

@@ -325,12 +325,12 @@ function Home() {
             defaultValue={sort_by}
           >
             <option value="">None</option>
-            <option value="confirmed-a">Confirmed(asec)</option>
-            <option value="confirmed-d">Confirmed(desc)</option>
-            <option value="affected-a">Affected(asec)</option>
-            <option value="affected-d">Affected(desc)</option>
-            <option value="vaccinated-a">Vaccinated(asec)</option>
-            <option value="vaccinated-d">Vaccinated(desc)</option>
+            <option value="confirmed-a">Confirmed(a-z)</option>
+            <option value="confirmed-d">Confirmed(z-a)</option>
+            <option value="affected-a">Affected%(a-z)</option>
+            <option value="affected-d">Affected%(z-a)</option>
+            <option value="vaccinated-a">Vaccinated%(a-z)</option>
+            <option value="vaccinated-d">Vaccinated%(z-a)</option>
           </select>
         </div>
       </section>
