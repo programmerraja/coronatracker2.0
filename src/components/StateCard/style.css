@@ -29,16 +29,11 @@
 }
 .state_body-wrapper {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-}
-.state_card-total {
-  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
 .state_card-link {
   text-align: right;
   cursor: pointer;

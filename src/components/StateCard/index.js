@@ -15,6 +15,7 @@ function StateCard({
   const [d_confirmed, setConfirmed] = useState(confirmed);
   const [d_recovered, setRecovered] = useState(recovered);
   const [d_deceased, setDeceased] = useState(deceased);
+  const [d_districts,setDistricts]=useState({});
   const [selected_district, setSelectedDistrict] = useState("none");
 
   const history = useHistory();
@@ -62,13 +63,18 @@ function StateCard({
               onChange={(e) => {
                 setSelectedDistrict(e.target.value);
                 ChangeToDistrictData(e.target.value);
+              }}  
+              // loading districts only when user focus such that we can avoid rendering 
+              //unwanted list
+              onFocus={()=>{
+                setDistricts(districts);
               }}
             >
               <option value="none" defaultValue={selected_district}>
                 None
               </option>
-              {districts &&
-                Object.keys(districts).map((district_name) => {
+              {d_districts &&
+                Object.keys(d_districts).map((district_name) => {
                   return (
                     <option key={district_name} value={district_name}>
                       {district_name}
@@ -79,23 +85,21 @@ function StateCard({
           )}
         </div>
         <div className="state_body-wrapper">
-          <div className="state_card-total">
             <p>
-              <i className="fas fa-check-circle" style={{ color: "brown" }}></i>
+              {/* <i className="fas fa-check-circle" style={{ color: "brown" }}></i> */}
               Confirmed: {d_confirmed?d_confirmed:"Data Not Found"}
             </p>
             <p>
-              <i className="fas fa-heartbeat" style={{ color: "green" }}></i>
+              {/* <i className="fas fa-heartbeat" style={{ color: "green" }}></i> */}
               Recovered: {d_recovered?d_recovered:"Data Not Found"}
             </p>
             <p>
-              <i
+              {/* <i
                 className="fas fa-exclamation-circle"
                 style={{ color: "red" }}
-              ></i>
+              ></i> */}
               Deceased: {d_deceased?d_deceased:"Data Not Found"}
             </p>
-          </div>
         </div>
         {state_short_name && (
           <p

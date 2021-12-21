@@ -1,12 +1,3 @@
-body {
-  background-color: white;
-  /* animation-name:fadein; */
-  animation-delay: 1.3s;
-  /* opacity:0; */
-  animation-fill-mode: forwards;
-  animation-duration: 3s;
-}
-
 .search_container {
   text-align: center;
   margin-top: 1rem;
@@ -18,8 +9,10 @@ body {
   width: 80%;
   margin: auto;
 }
+
 .search_container input[type="text"],
-.search_container input[type="date"] {
+.search_container input[type="date"],
+.search_container select {
   border-bottom: 0.1rem solid black;
   border-top: 0;
   border-left: 0;
@@ -36,16 +29,8 @@ body {
 .search_container input::placeholder {
   color: black;
 }
-.search_container_result {
-  display: none;
-  justify-content: center;
-  text-align: center;
-  color: red;
-}
 
-.state_container,
-.country_container,
-.district_container {
+.state_container {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -53,44 +38,8 @@ body {
   animation-name: fadein;
   animation-delay: 3s;
 }
-.state-div,
-.country-div,
-.district-div {
-  height: auto;
-  width: 300px;
-  margin: 2rem;
-  color: black;
-  background-color: white;
-  font-size: 1rem;
-  font-weight: 800;
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 9px 11px black;
-}
-.state-div:hover,
-.country-div:hover,
-.district-div:hover {
-  transform: scale(1.1);
-}
-.state-name,
-.country-name,
-.district-name {
-  font-size: 1.3rem;
-  font-style: bold;
-  text-align: center;
-  color: blue;
-  cursor: pointer;
-}
 .state_name {
   text-decoration: underline;
-}
-.state-data,
-.country-data,
-.district-data {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  padding: 1rem;
 }
 .filter_option {
   border: 1px solid black;
@@ -99,64 +48,9 @@ body {
 }
 .filter_option-clear {
   background-color: var(--primary-color);
-  color: white;
+  color: var(--secondary-color);
   border: 0;
   height: 25px;
   width: 70px;
   cursor: pointer;
-}
-@keyframes fadein {
-  0% {
-    opacity: 0;
-  }
-  25% {
-    opacity: 0.25;
-  }
-  50% {
-    opacity: 0.5;
-  }
-  75% {
-    opacity: 0.95;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-@keyframes slide {
-  0% {
-    transform: translateX(-10000px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-@keyframes spin {
-  0% {
-    transform: rotate(0);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-/* fro mobile device */
-@media (max-width: 575.98px) {
-  .img-fluid {
-    margin-bottom: 0rem;
-  }
-  nav span {
-    color: black;
-    font-size: 0.9rem;
-    font-weight: 900;
-    font-family: "Merriweather", serif;
-  }
-  nav a img {
-    width: 30px;
-    height: 30px;
-  }
-  .status-list li {
-    margin-right: auto;
-  }
-  .error_container {
-    max-width: 250px;
-  }
 }
