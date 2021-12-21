@@ -31,23 +31,27 @@ Delta, Delta7 stats will be displayed in those pages</li>
    <ul>
  <li> Date and sort by and District filters are applicable.</li>
  <li> If No Data match the filter Result not found UI will be shown.</li>
- <li> Data are stored on cache state beacuse the data is more then 5MB.</li>
+ <li> Data are stored on cache state beacuse the data is more then 5MB. so i use react state for caching.</li>
  </ul>
  
  ## what are the featurs that i implement my own?
  <ul>
-  <li>Avoided fetching multiple time same data by checking if the data avalible in cache.</li>
- <li>For some states,districts the data is not for that it will shown data not found in UI.</li>
- <li>Optimized state detail page by using pagination to avoid rendering a huge list in same window.</li>
+ <li>For some states anddistricts the data is not avalible for that it will shown data not found in UI.</li>
+ <li>Optimized state detail page by using pagination to avoid rendering a huge list in same page.</li>
  <li>It is responsive</li>
-  <li> Optimized the state card only render the districts in state card if user focus on the selcect html element.</li>
-   <li>Network Error are handled.</li>
-   <li>Checked the performance of the website using light house and got score.</li>
-    ![mobile1](img/mobile.png)
-    <p>For Mobile</p>
-    ![desktop](img/desktop.png)
-    <p>For Desktop</p>
- </ul>
+ <li>Optimized the state card only render the districts in state card if user focus on the selcect html element on state card.</li>
+ <li>Network Error are handled.</li>
+ <li>Checked the performance of the website using light house and improved some it.</li>
+
+<p>For Mobile</p>
+
+![mobile1](img/mobile.png)
+
+<p>For Desktop</p>
+  
+![desktop](img/desktop.png)
+
+</ul>
  
  ## what are the things i learned form it ?
 
@@ -74,7 +78,10 @@ Delta, Delta7 stats will be displayed in those pages</li>
  </ul>
 
 ## website preview
+<br>
+ <h4>Website Depolyed in <a href="https://coronatrackerz.netlify.app/">netlify</a>(https://coronatrackerz.netlify.app/)</h4>
+ <br>
 
-    ![preview1](img/preview1.png)
+![preview1](img/preview1.png)
 
-    ![preview2](img/preview2.png)
+![preview2](img/preview2.png)
