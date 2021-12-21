@@ -18,7 +18,7 @@ function Home() {
   const [states_time_cache, setStatesCache] = useState(null);
   //for filters
   const [filter_state, setFilterState] = useState("");
-  const [filter_date, setFilterDate] = useState("2021-10-31");
+  const [filter_date, setFilterDate] = useState(END_DATE);
   const [sort_by, setSortBy] = useState("none");
   //for UX
   const [msg, setMsg] = useState("");
