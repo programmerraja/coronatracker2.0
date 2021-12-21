@@ -5,7 +5,7 @@ import NoResultCard from "../NoResultCard";
 
 import "./style.css";
 
-const PER_PAGE = 20;
+const PER_PAGE = 10;
 
 function Table({ state_data, state_name, is_filter, state_dates }) {
   const [start, setStart] = useState(0);
