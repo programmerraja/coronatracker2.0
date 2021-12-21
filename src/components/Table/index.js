@@ -8,14 +8,13 @@ import "./style.css";
 const PER_PAGE = 10;
 
 function Table({ state_data, state_name, is_filter, state_dates }) {
+
   const [start, setStart] = useState(0);
-  
   const [state_length, setStateLength] = useState(
     Object.keys(state_data[state_name]["dates"]).length
   );
   const [per_page, setPerPage] = useState(PER_PAGE);
   const [page_no, setPageNo] = useState(1);
-
   const [dates, setDates] = useState(
     Object.keys(state_data[state_name]["dates"])
   );

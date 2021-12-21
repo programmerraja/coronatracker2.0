@@ -98,7 +98,7 @@ function Home() {
   }
 
   const getStatesByDate = (filter_date) => {
-    //checking if the date between 2020-03-26 and 2020-10-31
+    //checking if the date between 2020-03-26 and 2021-10-31
     if (
       new Date(filter_date) >= new Date(START_DATE) &&
       new Date(END_DATE) >= new Date(filter_date)

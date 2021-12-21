@@ -69,7 +69,7 @@ function StateDetail() {
   }, []);
 
   const filterStateByDate = (search_date) => {
-    //checking if the date between 2020-03-26 and 2020-10-31
+    //checking if the date between 2020-03-26 and 2021-10-31
     if (
       new Date(search_date) >= new Date(START_DATE) &&
       new Date(END_DATE) >= new Date(search_date)
@@ -90,38 +90,38 @@ function StateDetail() {
     }
   };
 
-  const swap=(states_meta,states_dates,i,j)=>{
+  const swap=(state_metas,state_dates,i,j)=>{
     //swapping the meta and state name such that it will in sync
-    let temp = states_meta[i];
-    states_meta[i] = states_meta[j];
-    states_meta[j] = temp;
+    let temp = state_metas[i];
+    state_metas[i] = state_metas[j];
+    state_metas[j] = temp;
 
-    temp = states_dates[i];
-    states_dates[i] = states_dates[j];
-    states_dates[j] = temp;
+    temp = state_dates[i];
+    state_dates[i] = state_dates[j];
+    state_dates[j] = temp;
   }
-  const sortByConfirmed = (states_meta,state_dates, key) => {
+  const sortByConfirmed = (state_metas,state_dates, key) => {
     //used bubble sort used for code readablity
-    for (let i = 0; i < states_meta.length; i++) {
-      for (let j = 0; j < states_meta.length; j++) {
-        if (states_meta[i].delta?.[key[0]] < states_meta[j].delta?.[key[0]]) {
-          swap(states_meta,state_dates,i,j);
+    for (let i = 0; i < state_metas.length; i++) {
+      for (let j = 0; j < state_metas.length; j++) {
+        if (state_metas[i].delta?.[key[0]] < state_metas[j].delta?.[key[0]]) {
+          swap(state_metas,state_dates,i,j);
         }
       }
     }
   };
 
-  const sortByAffected = (states_meta,state_dates, key) => {
+  const sortByAffected = (state_metas,state_dates, key) => {
     //used bubble sort used for code readablity
-    for (let i = 0; i < states_meta.length; i++) {
-      for (let j = 0; j < states_meta.length; j++) {
+    for (let i = 0; i < state_metas.length; i++) {
+      for (let j = 0; j < state_metas.length; j++) {
         //confirmed case divide by total population * 100 give affected %
         let state1_affected =
-          (states_meta[i].delta?.confirmed / population) * 100;
+          (state_metas[i].delta?.confirmed / population) * 100;
         let state2_affected =
-          (states_meta[j].delta?.confirmed / population) * 100;
+          (state_metas[j].delta?.confirmed / population) * 100;
         if (state1_affected < state2_affected) {
-          swap(states_meta,state_dates,i,j);
+          swap(state_metas,state_dates,i,j);
         }
       }
     }
@@ -130,7 +130,7 @@ function StateDetail() {
   const sortByUserPreference = (sort_by) => {
     if (sort_by) {
       //separating states meta and name for sorting purpose
-      let states_meta = [];
+      let state_metas = [];
       let state_dates = [];
 
       Object.keys(state_data[STATE_NAME]["dates"]).forEach((date) => {
@@ -145,29 +145,29 @@ function StateDetail() {
         }
         //seperating meta and date data
         state_dates.push(date);
-        states_meta.push(state_data[STATE_NAME]["dates"][date]);
+        state_metas.push(state_data[STATE_NAME]["dates"][date]);
       });
       //the key has sort by value and which order seperated by -
       let key = sort_by.split("-");
       if (key[0] === "confirmed") {
-        sortByConfirmed(states_meta,state_dates, key);
+        sortByConfirmed(state_metas,state_dates, key);
       } else if (key[0] === "affected") {
-        sortByAffected(states_meta,state_dates, key);
+        sortByAffected(state_metas,state_dates, key);
       } else {
-        sortByVaccinated(states_meta,state_dates, key);
+        sortByVaccinated(state_metas,state_dates, key);
       }
       let new_sorted_state_data = { [STATE_NAME]: { dates: {} } };
       //if asec travel from start else in reverse
       if (key[1] === "a") {
         for (let i = 0; i < state_dates.length; i++) {
           new_sorted_state_data[STATE_NAME]["dates"][state_dates[i]] = {
-            ...states_meta[i],
+            ...state_metas[i],
           };
         }
       } else {
         for (let i = state_dates.length - 1; i >= 0; i--) {
           new_sorted_state_data[STATE_NAME]["dates"][state_dates[i]] = {
-            ...states_meta[i],
+            ...state_metas[i],
           };
         }
       }
