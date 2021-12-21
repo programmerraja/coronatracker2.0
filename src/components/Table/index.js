@@ -20,7 +20,8 @@ function Table({ state_data, state_name, is_filter, state_dates }) {
     Object.keys(state_data[state_name]["dates"])
   );
 
-  //if user choose date filter we need to set per page to full length;
+  //if user choose date filter we need to set per page to full length 
+  //such that it will travel through all and print only one;
   useEffect(() => {
     if (!is_filter) {
       setPerPage(state_length);
@@ -29,7 +30,7 @@ function Table({ state_data, state_name, is_filter, state_dates }) {
     }
   }, [is_filter]);
 
-  //when we sort the when user click sort by if we use Object.keys it return in sort order that we dont want
+  //when we sort the when user click sort by if we use Object.keys it return in sort order that we don't want
   //so we don't want when user click sort by so we pass the actual sorted that we want
   useEffect(() => {
     if (state_dates.length > 0) {

@@ -48,7 +48,7 @@ function StateCard({
     }
     localStorage.setItem("population", population);
 
-    history.push(`/${state_short_name}`);
+    history.push(`/state/${state_short_name}`);
   };
   
   return (

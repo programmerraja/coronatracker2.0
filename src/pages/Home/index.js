@@ -17,7 +17,7 @@ function Home() {
   //for caching the time line series data
   const [states_time_cache, setStatesCache] = useState(null);
   //for filters
-  const [filter_state, setSearchState] = useState("");
+  const [filter_state, setFilterState] = useState("");
   const [filter_date, setFilterDate] = useState("2021-10-31");
   const [sort_by, setSortBy] = useState("none");
   //for UX
@@ -115,6 +115,13 @@ function Home() {
             //cannot store the huge data in local storage so we storing on state;
             setStatesCache(data);
             setValidDate(true);
+            //clearing the user search
+            if(filter_state){
+              setFilterState("");
+            }
+            if(sort_by){
+              setSortBy("none");
+            }
           })
           .catch((data) => {
             setLoading(false);
@@ -246,6 +253,7 @@ function Home() {
       }
       //assingin new states
       setStates(new_sorted_states);
+
     } else {
       let new_sorted_states = {};
       Object.keys(states)
@@ -286,7 +294,7 @@ function Home() {
           name="search_input"
           className="search_input"
           onChange={(e) => {
-            setSearchState(e.target.value);
+            setFilterState(e.target.value);
             filterState(e.target.value);
           }}
           value={filter_state}

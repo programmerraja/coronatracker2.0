@@ -1,5 +1,5 @@
 {
-  "name": "yuki",
+  "name": "Corona Tracker",
   "version": "1.0.0",
   "proxy": "http://localhost:3001/",
   "description": "corona tracker website.",
@@ -14,7 +14,6 @@
   "author": "K.boopathi",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
