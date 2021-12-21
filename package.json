@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "proxy": "http://localhost:3001/",
   "description": "corona tracker website.",
-  "homepage": ".",
   "main": "index.js",
   "scripts": {
     "start": "react-scripts start",
