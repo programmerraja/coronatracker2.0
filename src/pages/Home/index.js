@@ -10,7 +10,7 @@ import STATE_NAMES from "../../utils/stateNames";
 import "./style.css";
 
 const START_DATE="2020-03-26";
-const END_DATE="2020-10-31";
+const END_DATE="2021-10-31";
 
 function Home() {
   const [states, setStates] = useState({});
