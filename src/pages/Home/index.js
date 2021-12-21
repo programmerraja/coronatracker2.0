@@ -7,34 +7,38 @@ import NoResultCard from "../../components/NoResultCard";
 import API from "../../utils/API";
 import STATE_NAMES from "../../utils/stateNames";
 
-import errorHandler from "../../utils/errorHandler";
-
 import "./style.css";
+
+const START_DATE="2020-03-26";
+const END_DATE="2020-10-31";
 
 function Home() {
   const [states, setStates] = useState({});
+  //for caching the time line series data
   const [states_time_cache, setStatesCache] = useState(null);
+  //for filters
   const [filter_state, setSearchState] = useState("");
   const [filter_date, setFilterDate] = useState("2021-10-31");
   const [sort_by, setSortBy] = useState("none");
+  //for UX
   const [msg, setMsg] = useState("");
   const [is_find, setIsFind] = useState(true);
   const [is_valid_date, setValidDate] = useState(true);
-  const [loading, setLoading] = useState(true);
   const [has_error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     //checking if cache data avaliablle in local storage
     let states_cache = localStorage.getItem("states_cache");
     if (!states_cache) {
       API.getStates()
-        .then((res) => {
+        .then((data) => {
           setLoading(false);
-          setStates(res.data);
+          setStates(data);
           //storing cache in local
-          localStorage.setItem("states_cache", JSON.stringify(res.data));
+          localStorage.setItem("states_cache", JSON.stringify(data));
         })
-        .catch((res) => {
+        .catch((data) => {
           setLoading(false);
           setError(true);
           setMsg("Error while loading data try refreshing the page");
@@ -68,90 +72,83 @@ function Home() {
       }
     });
   };
+  
+  const appendData=(data)=>{
+    let new_state = {};
+    //for some state no data so we adding empty data with info
+    let empty_data = {
+      total: {
+        confirmed: "Data Not Found",
+        recovered: "Data Not Found",
+        deceased: "Data Not Found",
+      },
+    };
+  
+    Object.keys(data).forEach((state) => {
+      //if we have data append it else append empty  data.
+      new_state[state] = data[state]["dates"][filter_date]
+        ? data[state]["dates"][filter_date]
+        : empty_data;
+      //appending districts data to new state because this API endpoints does not return districts
+      new_state[state]["districts"] = {
+        ...states[state]?.["districts"],
+      };
+    });
+    return new_state;
+  }
 
   const getStatesByDate = (filter_date) => {
     //checking if the date between 2020-03-26 and 2020-10-31
     if (
-      new Date(filter_date) >= new Date("2020-03-26") &&
-      new Date("2021-10-31") >= new Date(filter_date)
+      new Date(filter_date) >= new Date(START_DATE) &&
+      new Date(END_DATE) >= new Date(filter_date)
     ) {
       //checking if cache data avaliablle in local storage
       if (!states_time_cache) {
         setLoading(true);
         API.getStatesByDate()
-          .then((res) => {
+          .then((data) => {
             setLoading(false);
-            let new_state = {};
-            //for some state no data so we adding empty data with info
-            let empty_data = {
-              total: {
-                confirmed: "Data Not Found",
-                recovered: "Data Not Found",
-                deceased: "Data Not Found",
-              },
-            };
-            Object.keys(res.data).forEach((state) => {
-              //if we have data append it else say no data found
-              new_state[state] = res.data[state]["dates"][filter_date]
-                ? res.data[state]["dates"][filter_date]
-                : empty_data;
-              //appending districts data to new state
-              new_state[state]["districts"] = {
-                ...states[state]?.["districts"],
-              };
-            });
+            //append the wanted data
+            let new_state=appendData(data);
             setStates(new_state);
             //cannot store the huge data in local storage so we storing on state;
-            setStatesCache(res.data);
+            setStatesCache(data);
             setValidDate(true);
           })
-          .catch((res) => {
+          .catch((data) => {
             setLoading(false);
             setError(true);
             setMsg("Error while loading data try refreshing the page");
           });
       } else {
         //if cache avalible use it
-        let new_state = {};
-        //for some state no data so we adding empty data with info
-        let empty_data = {
-          total: {
-            confirmed: "Data Not Found",
-            recovered: "Data Not Found",
-            deceased: "Data Not Found",
-          },
-        };
-        Object.keys(states_time_cache).forEach((state) => {
-          //if we have data append it else say no data found
-          new_state[state] = states_time_cache[state]["dates"][filter_date]
-            ? states_time_cache[state]["dates"][filter_date]
-            : empty_data;
-          //appending districts data to new state
-          new_state[state]["districts"] = { ...states[state]?.["districts"] };
-        });
-        //call the function once the state is updated
+        //append the wanted data
+        let new_state=appendData(states_time_cache);
         setStates(new_state);
         setValidDate(true);
       }
     } else {
       setValidDate(false);
-      setMsg("Plse try the date between 2020-03-26 and 2021-10-31");
+      setMsg(`Plse try the date between ${START_DATE} and ${END_DATE}`);
     }
   };
+  const swap=(states_meta,states_names,i,j)=>{
+       //swapping the meta and state name such that it will in sync
+       let temp = states_meta[i];
+       states_meta[i] = states_meta[j];
+       states_meta[j] = temp;
 
+       temp = states_names[i];
+       states_names[i] = states_names[j];
+       states_names[j] = temp;
+  }
   const sortByConfirmed = (states_meta, states_names, key) => {
     //used bubble sort used for code readablity
     for (let i = 0; i < states_meta.length; i++) {
       for (let j = 0; j < states_meta.length; j++) {
         if (states_meta[i].total?.[key[0]] < states_meta[j].total?.[key[0]]) {
-          //swapping the meta and state name such that it will in sync
-          let temp = states_meta[i];
-          states_meta[i] = states_meta[j];
-          states_meta[j] = temp;
-
-          temp = states_names[i];
-          states_names[i] = states_names[j];
-          states_names[j] = temp;
+          swap(states_meta,states_names,i,j);
         }
       }
     }
@@ -169,14 +166,7 @@ function Home() {
           (states_meta[j].total?.confirmed / states_meta[j].meta.population) *
           100;
         if (state1_affected < state2_affected) {
-          //swapping the meta and state name such that it will in sync
-          let temp = states_meta[i];
-          states_meta[i] = states_meta[j];
-          states_meta[j] = temp;
-
-          temp = states_names[i];
-          states_names[i] = states_names[j];
-          states_names[j] = temp;
+          swap(states_meta,states_names,i,j);
         }
       }
     }
@@ -196,14 +186,7 @@ function Home() {
             states_meta[j]?.meta?.population) *
           100;
         if (state1_vaccinated < state2_vaccinated) {
-          //swapping the meta and state name such that it will in sync
-          let temp = states_meta[i];
-          states_meta[i] = states_meta[j];
-          states_meta[j] = temp;
-
-          temp = states_names[i];
-          states_names[i] = states_names[j];
-          states_names[j] = temp;
+          swap(states_meta,states_names,i,j);
         }
       }
     }

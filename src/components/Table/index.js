@@ -9,11 +9,13 @@ const PER_PAGE = 20;
 
 function Table({ state_data, state_name, is_filter, state_dates }) {
   const [start, setStart] = useState(0);
+  
   const [state_length, setStateLength] = useState(
     Object.keys(state_data[state_name]["dates"]).length
   );
   const [per_page, setPerPage] = useState(PER_PAGE);
   const [page_no, setPageNo] = useState(1);
+
   const [dates, setDates] = useState(
     Object.keys(state_data[state_name]["dates"])
   );
@@ -88,7 +90,7 @@ function Table({ state_data, state_name, is_filter, state_dates }) {
                 //for filtering based on date
                 if (!state_data[state_name]["dates"][dates[i]].isHide) {
                   rows.push(
-                    <tr key={i}>
+                    <tr key={i+"key"+dates[i]}>
                       <td data-label="No">{i + 1}</td>
                       <td data-label="Date">{dates[i]}</td>
                       <td data-label="Confirmed">

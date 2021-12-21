@@ -28,21 +28,9 @@ function StateCard({
   const ChangeToDistrictData = (district_name) => {
     for (const name in districts) {
       if (name === district_name) {
-        setConfirmed(
-          districts[name].total.confirmed
-            ? districts[name].total.confirmed
-            : "Data Not Found"
-        );
-        setRecovered(
-          districts[name].total.recovered
-            ? districts[name].total.recovered
-            : "Data Not Found"
-        );
-        setDeceased(
-          districts[name].total.deceased
-            ? districts[name].total.deceased
-            : "Data Not Found"
-        );
+        setConfirmed(districts[name].total.confirmed);
+        setRecovered(districts[name].total.recovered);
+        setDeceased(districts[name].total.deceased);
       }
     }
     //if user select none we need show the state data
@@ -52,6 +40,7 @@ function StateCard({
       setDeceased(deceased);
     }
   };
+  
   const storeToLocalStorage = (state_short_name) => {
     //for some state there is no districts so it better to check
     if (districts) {
@@ -61,6 +50,7 @@ function StateCard({
 
     history.push(`/${state_short_name}`);
   };
+  
   return (
     <>
       <div className="state_card">
@@ -92,18 +82,18 @@ function StateCard({
           <div className="state_card-total">
             <p>
               <i className="fas fa-check-circle" style={{ color: "brown" }}></i>
-              Confirmed: {d_confirmed}
+              Confirmed: {d_confirmed?d_confirmed:"Data Not Found"}
             </p>
             <p>
               <i className="fas fa-heartbeat" style={{ color: "green" }}></i>
-              Recovered: {d_recovered}
+              Recovered: {d_recovered?d_recovered:"Data Not Found"}
             </p>
             <p>
               <i
                 className="fas fa-exclamation-circle"
                 style={{ color: "red" }}
               ></i>
-              Deceased: {d_deceased}
+              Deceased: {d_deceased?d_deceased:"Data Not Found"}
             </p>
           </div>
         </div>

@@ -8,9 +8,11 @@ import NoResultCard from "../../components/NoResultCard";
 
 import API from "../../utils/API";
 import STATE_NAMES from "../../utils/stateNames";
-import errorHandler from "../../utils/errorHandler";
 
 import "./style.css";
+
+const START_DATE="2020-03-26";
+const END_DATE="2020-10-31";
 
 function StateDetail() {
 
@@ -30,17 +32,17 @@ function StateDetail() {
 
   useEffect(() => {
     API.getStatesByDate()
-      .then((res) => {
+      .then((data) => {
         setLoading(false);
         let temp_state_data = {};
-        for (const state_name in res.data) {
+        for (const state_name in data) {
           if (state_name === STATE_NAME) {
-            temp_state_data[state_name] = res.data[state_name];
+            temp_state_data[state_name] = data[state_name];
             setStateData(temp_state_data);
           }
         }
       })
-      .catch((res) => {
+      .catch((data) => {
         setLoading(false);
         setError(true);
         setMsg("Error while loading data try refreshing the page");
@@ -61,8 +63,8 @@ function StateDetail() {
   const filterStateByDate = (search_date) => {
     //checking if the date between 2020-03-26 and 2020-10-31
     if (
-      new Date(search_date) >= new Date("2020-03-26") &&
-      new Date("2020-10-31") >= new Date(search_date)
+      new Date(search_date) >= new Date(START_DATE) &&
+      new Date(END_DATE) >= new Date(search_date)
     ) {
       let temp_state_data = { ...state_data };
       for (const date in state_data[STATE_NAME]["dates"]) {
@@ -76,7 +78,7 @@ function StateDetail() {
       setIsFind(true);
     } else {
       setIsFind(false);
-      setMsg("Plse try the date between 2020-03-26 and 2020-10-31");
+      setMsg(`Plse try the date between ${START_DATE} and ${END_DATE}`);
     }
   };
 
