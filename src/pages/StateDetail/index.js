@@ -90,28 +90,28 @@ function StateDetail() {
     }
   };
 
-  const swap=(states_meta,states_names,i,j)=>{
+  const swap=(states_meta,states_dates,i,j)=>{
     //swapping the meta and state name such that it will in sync
     let temp = states_meta[i];
     states_meta[i] = states_meta[j];
     states_meta[j] = temp;
 
-    temp = states_names[i];
-    states_names[i] = states_names[j];
-    states_names[j] = temp;
+    temp = states_dates[i];
+    states_dates[i] = states_dates[j];
+    states_dates[j] = temp;
   }
-  const sortByConfirmed = (states_meta, state_dates, key) => {
+  const sortByConfirmed = (states_meta,state_dates, key) => {
     //used bubble sort used for code readablity
     for (let i = 0; i < states_meta.length; i++) {
       for (let j = 0; j < states_meta.length; j++) {
         if (states_meta[i].delta?.[key[0]] < states_meta[j].delta?.[key[0]]) {
-          swap(states_meta,states_names,i,j);
+          swap(states_meta,state_dates,i,j);
         }
       }
     }
   };
 
-  const sortByAffected = (states_meta, state_dates, key) => {
+  const sortByAffected = (states_meta,state_dates, key) => {
     //used bubble sort used for code readablity
     for (let i = 0; i < states_meta.length; i++) {
       for (let j = 0; j < states_meta.length; j++) {
@@ -121,7 +121,7 @@ function StateDetail() {
         let state2_affected =
           (states_meta[j].delta?.confirmed / population) * 100;
         if (state1_affected < state2_affected) {
-          swap(states_meta,states_names,i,j);
+          swap(states_meta,state_dates,i,j);
         }
       }
     }
@@ -150,11 +150,11 @@ function StateDetail() {
       //the key has sort by value and which order seperated by -
       let key = sort_by.split("-");
       if (key[0] === "confirmed") {
-        sortByConfirmed(states_meta, state_dates, key);
+        sortByConfirmed(states_meta,state_dates, key);
       } else if (key[0] === "affected") {
-        sortByAffected(states_meta, state_dates, key);
+        sortByAffected(states_meta,state_dates, key);
       } else {
-        sortByVaccinated(states_meta, state_dates, key);
+        sortByVaccinated(states_meta,state_dates, key);
       }
       let new_sorted_state_data = { [STATE_NAME]: { dates: {} } };
       //if asec travel from start else in reverse
