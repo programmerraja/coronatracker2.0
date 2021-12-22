@@ -137,6 +137,7 @@ function Home() {
         setStates(new_state);
         setValidDate(true);
       }
+      setSortBy("none");
     } else {
       setValidDate(false);
       setMsg(`Plse try the date between ${START_DATE} and ${END_DATE}`);
