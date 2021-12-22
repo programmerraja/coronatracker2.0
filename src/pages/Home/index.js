@@ -136,8 +136,14 @@ function Home() {
         let new_state=appendData(states_time_cache);
         setStates(new_state);
         setValidDate(true);
+        //clearing the user search
+        if(filter_state){
+          setFilterState("");
+        }
+        if(sort_by){
+          setSortBy("none");
+        }
       }
-      setSortBy("none");
     } else {
       setValidDate(false);
       setMsg(`Plse try the date between ${START_DATE} and ${END_DATE}`);
