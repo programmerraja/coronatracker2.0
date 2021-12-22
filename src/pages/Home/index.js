@@ -145,7 +145,6 @@ function Home() {
           setFilterState("");
         }
         if(sort_by){
-          alert(sort_by)
           setSortBy("none");
         }
       }
