@@ -17,6 +17,7 @@ const END_DATE="2021-10-31";
 function StateDetail() {
 
   const [state_data, setStateData] = useState({});
+  const [c_state_data, setStateCacheData] = useState({});
   const [state_dates, setStateDates] = useState([]);
   const [districts, setDistricts] = useState({});
   const [population, setPopulation] = useState(1);
@@ -38,15 +39,17 @@ function StateDetail() {
     //if user visiting directly this page
     if(temp_state_name!=STATE_NAMES[STATE_NAME]){
       history.push("/");
+      return;
     }
     API.getStatesByDate()
       .then((data) => {
         setLoading(false);
-        let temp_state_data = {};
+        let new_state_data = {};
         for (const state_name in data) {
           if (state_name === STATE_NAME) {
-            temp_state_data[state_name] = data[state_name];
-            setStateData(temp_state_data);
+            new_state_data[state_name] = data[state_name];
+            setStateData(new_state_data);
+            setStateCacheData(new_state_data);
           }
         }
       })
@@ -74,15 +77,15 @@ function StateDetail() {
       new Date(search_date) >= new Date(START_DATE) &&
       new Date(END_DATE) >= new Date(search_date)
     ) {
-      let temp_state_data = { ...state_data };
-      for (const date in state_data[STATE_NAME]["dates"]) {
+      let new_state_data = {[STATE_NAME]:{dates:{}}};
+      for (const date in c_state_data[STATE_NAME]["dates"]) {
         if (date === search_date) {
-          temp_state_data[STATE_NAME]["dates"][date].isHide = false;
-        } else {
-          temp_state_data[STATE_NAME]["dates"][date].isHide = true;
+          //storing only we need on state 
+          new_state_data[STATE_NAME]["dates"][date] =c_state_data[STATE_NAME]["dates"][date];
         }
       }
-      setStateData({ ...temp_state_data });
+      setStateData({ ...new_state_data });
+      setStateDates([]);
       setIsFind(true);
     } else {
       setIsFind(false);
@@ -194,16 +197,14 @@ function StateDetail() {
   
   const clearAllFilter = () => {
     setFilterDate("");
+    setStateDates([]);
     setSelectedDistrict("none");
     setSortBy("");
     setIsFind(true);
-    let temp_state_data = { ...state_data };
-    //converting back to false such that it will show all
-    for (const date in state_data[STATE_NAME]["dates"]) {
-      temp_state_data[STATE_NAME]["dates"][date].isHide = false;
-    }
-    setStateData({ ...temp_state_data });
+    //when user click clear all set the cache data
+    setStateData(c_state_data);
   };
+
   if (state_data && !loading) {
     return (
       <>
@@ -277,7 +278,7 @@ function StateDetail() {
             <Table
               state_data={state_data}
               state_name={STATE_NAME}
-              is_filter={filter_date === ""}
+              is_filter={filter_date!=""}
               state_dates={state_dates}
             />
           ) : (

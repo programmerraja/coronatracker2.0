@@ -13,26 +13,26 @@ function Table({ state_data, state_name, is_filter, state_dates }) {
   const [state_length, setStateLength] = useState(
     Object.keys(state_data[state_name]["dates"]).length
   );
-  const [per_page, setPerPage] = useState(PER_PAGE);
+  const [per_page, setPerPage] = useState(is_filter?1:PER_PAGE);
   const [page_no, setPageNo] = useState(1);
   const [dates, setDates] = useState(
     Object.keys(state_data[state_name]["dates"])
   );
 
-  //if user choose date filter we need to set per page to full length 
-  //such that it will travel through all and print only one;
+  //if user choose date filter we need to set per page to 1 because it has only one element in array
   useEffect(() => {
-    if (!is_filter) {
-      setPerPage(state_length);
+    if (is_filter) {
+      setPerPage(1);
     } else {
       setPerPage(PER_PAGE);
+      setStateLength(Object.keys(state_data[state_name]["dates"]).length);
     }
   }, [is_filter]);
 
   //when we sort the when user click sort by if we use Object.keys it return in sort order that we don't want
   //so we don't want when user click sort by so we pass the actual sorted that we want
   useEffect(() => {
-    if (state_dates.length > 0) {
+    if (state_dates.length > 0 && !is_filter) {
       setDates(state_dates);
     } else {
       setDates(Object.keys(state_data[state_name]["dates"]));
@@ -87,8 +87,7 @@ function Table({ state_data, state_name, is_filter, state_dates }) {
               let rows = [];
               //for pagination
               for (let i = start; i < start + per_page; i++) {
-                //for filtering based on date
-                if (!state_data[state_name]["dates"][dates[i]].isHide) {
+                if (state_data[state_name]["dates"][dates[i]]) {
                   rows.push(
                     <tr key={i+"key"+dates[i]}>
                       <td data-label="No">{i + 1}</td>
@@ -176,7 +175,7 @@ function Table({ state_data, state_name, is_filter, state_dates }) {
             })}
         </tbody>
       </table>
-      {is_filter && (
+      {!is_filter && (
         <div className="pagination_buttons">
           {page_no != 1 ? (
             <input type="button" value="Previous" onClick={perviousPage} />
