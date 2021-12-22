@@ -126,7 +126,7 @@ function Home() {
               setFilterState("");
             }
             if(sort_by){
-              setSortBy("");
+              setSortBy("none");
             }
           })
           .catch((data) => {
@@ -145,7 +145,8 @@ function Home() {
           setFilterState("");
         }
         if(sort_by){
-          setSortBy("");
+          alert(sort_by)
+          setSortBy("none");
         }
       }
     } else {
