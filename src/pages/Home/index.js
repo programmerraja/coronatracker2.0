@@ -94,6 +94,10 @@ function Home() {
       new_state[state]["districts"] = {
         ...states[state]?.["districts"],
       };
+      //appending meta data for population
+      new_state[state]["meta"]={
+        ...states[state]?.["meta"],
+      }
     });
     return new_state;
   }
@@ -251,7 +255,7 @@ function Home() {
       } else {
         sortByVaccinated(states_meta, states_names, key);
       }
-      console.log(states_names)
+
       let new_sorted_states = {};
       //if asec travel from start else in reverse
       if (key[1] === "a") {
