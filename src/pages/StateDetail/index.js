@@ -106,10 +106,14 @@ function StateDetail() {
   const sortByConfirmed = (state_metas,state_dates, key) => {
     //used bubble sort used for code readablity
     for (let i = 0; i < state_metas.length; i++) {
+      let swapped = 0;
       for (let j = 0; j < state_metas.length; j++) {
         if (state_metas[i].delta?.[key[0]] < state_metas[j].delta?.[key[0]]) {
           swap(state_metas,state_dates,i,j);
+          swapped = 1;
         }
+        if(!swapped)
+        break;
       }
     }
   };
@@ -117,6 +121,7 @@ function StateDetail() {
   const sortByAffected = (state_metas,state_dates, key) => {
     //used bubble sort used for code readablity
     for (let i = 0; i < state_metas.length; i++) {
+      let swapped = 0;
       for (let j = 0; j < state_metas.length; j++) {
         //confirmed case divide by total population * 100 give affected %
         let state1_affected =
@@ -125,7 +130,10 @@ function StateDetail() {
           (state_metas[j].delta?.confirmed / population) * 100;
         if (state1_affected < state2_affected) {
           swap(state_metas,state_dates,i,j);
+          swapped = 1;
         }
+        if(!swapped)
+        break;
       }
     }
   };

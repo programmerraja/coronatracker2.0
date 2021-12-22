@@ -89,7 +89,8 @@ function Home() {
       new_state[state] = data[state]["dates"][filter_date]
         ? data[state]["dates"][filter_date]
         : empty_data;
-      //appending districts data to new state because this API endpoints does not return districts
+      //appending districts data to new state because time series API endpoints 
+      //does not return districts
       new_state[state]["districts"] = {
         ...states[state]?.["districts"],
       };
@@ -98,7 +99,8 @@ function Home() {
   }
 
   const getStatesByDate = (filter_date) => {
-    //checking if the date between 2020-03-26 and 2021-10-31
+    //checking if the date between 2020-03-26 and 2021-10-31 to avoid iterating
+    //date list unwantendly
     if (
       new Date(filter_date) >= new Date(START_DATE) &&
       new Date(END_DATE) >= new Date(filter_date)
@@ -140,6 +142,7 @@ function Home() {
       setMsg(`Plse try the date between ${START_DATE} and ${END_DATE}`);
     }
   };
+
   const swap=(states_meta,states_names,i,j)=>{
        //swapping the meta and state name such that it will in sync
        let temp = states_meta[i];
@@ -150,13 +153,18 @@ function Home() {
        states_names[i] = states_names[j];
        states_names[j] = temp;
   }
+  
   const sortByConfirmed = (states_meta, states_names, key) => {
     //used bubble sort used for code readablity
     for (let i = 0; i < states_meta.length; i++) {
-      for (let j = 0; j < states_meta.length; j++) {
+      let swapped = 0;
+      for (let j = 0; j < states_meta.length - i - 1; j++) {
         if (states_meta[i].total?.[key[0]] < states_meta[j].total?.[key[0]]) {
           swap(states_meta,states_names,i,j);
+          swapped = 1;
         }
+        if(!swapped)
+        break;
       }
     }
   };
@@ -164,6 +172,7 @@ function Home() {
   const sortByAffected = (states_meta, states_names, key) => {
     //used bubble sort used for code readablity
     for (let i = 0; i < states_meta.length - 1; i++) {
+      let swapped = 0;
       for (let j = 0; j < states_meta.length - i - 1; j++) {
         //confirmed case divide by total population * 100 give affected %
         let state1_affected =
@@ -174,7 +183,10 @@ function Home() {
           100;
         if (state1_affected < state2_affected) {
           swap(states_meta,states_names,i,j);
+          swapped = 1;
         }
+        if(!swapped)
+        break;
       }
     }
   };
@@ -182,6 +194,7 @@ function Home() {
   const sortByVaccinated = (states_meta, states_names, key) => {
     //used bubble sort used for code readablity
     for (let i = 0; i < states_meta.length - 1; i++) {
+      let swapped = 0;
       for (let j = 0; j < states_meta.length - i - 1; j++) {
         //vaccinated does 1  divide by total population * 100 give vaccinated %
         let state1_vaccinated =
@@ -194,7 +207,10 @@ function Home() {
           100;
         if (state1_vaccinated < state2_vaccinated) {
           swap(states_meta,states_names,i,j);
+          swapped = 1;
         }
+        if(!swapped)
+        break;
       }
     }
   };

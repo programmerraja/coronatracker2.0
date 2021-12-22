@@ -1,7 +1,6 @@
 {
   "name": "CoronaTracker",
   "version": "1.0.0",
-  "proxy": "http://localhost:3001/",
   "description": "corona tracker website.",
   "main": "index.js",
   "scripts": {
