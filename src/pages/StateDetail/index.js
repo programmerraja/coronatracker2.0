@@ -106,14 +106,10 @@ function StateDetail() {
   const sortByConfirmed = (state_metas,state_dates, key) => {
     //used bubble sort used for code readablity
     for (let i = 0; i < state_metas.length; i++) {
-      let swapped = 0;
-      for (let j = 0; j < state_metas.length; j++) {
-        if (state_metas[i].delta?.[key[0]] < state_metas[j].delta?.[key[0]]) {
+      for (let j = i+1; j < state_metas.length; j++) {
+        if (state_metas[i].delta?.[key[0]] > state_metas[j].delta?.[key[0]]) {
           swap(state_metas,state_dates,i,j);
-          swapped = 1;
         }
-        if(!swapped)
-        break;
       }
     }
   };
@@ -121,19 +117,16 @@ function StateDetail() {
   const sortByAffected = (state_metas,state_dates, key) => {
     //used bubble sort used for code readablity
     for (let i = 0; i < state_metas.length; i++) {
-      let swapped = 0;
-      for (let j = 0; j < state_metas.length; j++) {
+      for (let j = i+1; j < state_metas.length; j++) {
         //confirmed case divide by total population * 100 give affected %
         let state1_affected =
           (state_metas[i].delta?.confirmed / population) * 100;
         let state2_affected =
           (state_metas[j].delta?.confirmed / population) * 100;
-        if (state1_affected < state2_affected) {
+
+        if (state1_affected > state2_affected) {
           swap(state_metas,state_dates,i,j);
-          swapped = 1;
         }
-        if(!swapped)
-        break;
       }
     }
   };
@@ -143,20 +136,24 @@ function StateDetail() {
       //separating states meta and name for sorting purpose
       let state_metas = [];
       let state_dates = [];
+      let temp_state_data={...state_data};
 
-      Object.keys(state_data[STATE_NAME]["dates"]).forEach((date) => {
+      Object.keys(temp_state_data[STATE_NAME]["dates"]).forEach((date) => {
         //for some date there is no confirmed so we appending 0 for it for sorting purpose
-        if (
-          state_data[STATE_NAME]["dates"][date] &&
-          state_data[STATE_NAME]["dates"][date]["delta"]
-        ) {
-          if (!state_data[STATE_NAME]["dates"][date]["delta"]) {
-            state_data[STATE_NAME]["dates"][date]["delta"] = { confirmed: 0 };
-          }
+        
+        if (!temp_state_data[STATE_NAME]["dates"][date]["delta"]) {
+            temp_state_data[STATE_NAME]["dates"][date] = { "delta":{confirmed:0}};
+        }
+        if(!temp_state_data[STATE_NAME]["dates"][date]["delta"]["confirmed"]){
+          temp_state_data[STATE_NAME]["dates"][date]["delta"] 
+          = 
+          {...temp_state_data[STATE_NAME]["dates"][date]["delta"],
+          confirmed:0
+          };
         }
         //seperating meta and date data
         state_dates.push(date);
-        state_metas.push(state_data[STATE_NAME]["dates"][date]);
+        state_metas.push(temp_state_data[STATE_NAME]["dates"][date]);
       });
       //the key has sort by value and which order seperated by -
       let key = sort_by.split("-");

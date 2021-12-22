@@ -157,14 +157,10 @@ function Home() {
   const sortByConfirmed = (states_meta, states_names, key) => {
     //used bubble sort used for code readablity
     for (let i = 0; i < states_meta.length; i++) {
-      let swapped = 0;
-      for (let j = 0; j < states_meta.length - i - 1; j++) {
-        if (states_meta[i].total?.[key[0]] < states_meta[j].total?.[key[0]]) {
+      for (let j = i+1; j < states_meta.length; j++) {
+        if (states_meta[i].total?.[key[0]] > states_meta[j].total?.[key[0]]) {
           swap(states_meta,states_names,i,j);
-          swapped = 1;
         }
-        if(!swapped)
-        break;
       }
     }
   };
@@ -172,8 +168,7 @@ function Home() {
   const sortByAffected = (states_meta, states_names, key) => {
     //used bubble sort used for code readablity
     for (let i = 0; i < states_meta.length - 1; i++) {
-      let swapped = 0;
-      for (let j = 0; j < states_meta.length - i - 1; j++) {
+      for (let j = i+1; j < states_meta.length; j++) {
         //confirmed case divide by total population * 100 give affected %
         let state1_affected =
           (states_meta[i].total?.confirmed / states_meta[i].meta.population) *
@@ -181,12 +176,9 @@ function Home() {
         let state2_affected =
           (states_meta[j].total?.confirmed / states_meta[j].meta.population) *
           100;
-        if (state1_affected < state2_affected) {
+        if (state1_affected > state2_affected) {
           swap(states_meta,states_names,i,j);
-          swapped = 1;
         }
-        if(!swapped)
-        break;
       }
     }
   };
@@ -194,8 +186,7 @@ function Home() {
   const sortByVaccinated = (states_meta, states_names, key) => {
     //used bubble sort used for code readablity
     for (let i = 0; i < states_meta.length - 1; i++) {
-      let swapped = 0;
-      for (let j = 0; j < states_meta.length - i - 1; j++) {
+      for (let j = i+1; j < states_meta.length; j++) {
         //vaccinated does 1  divide by total population * 100 give vaccinated %
         let state1_vaccinated =
           (states_meta[i].total?.vaccinated1 /
@@ -205,12 +196,9 @@ function Home() {
           (states_meta[j].total?.vaccinated1 /
             states_meta[j]?.meta?.population) *
           100;
-        if (state1_vaccinated < state2_vaccinated) {
+        if (state1_vaccinated > state2_vaccinated) {
           swap(states_meta,states_names,i,j);
-          swapped = 1;
         }
-        if(!swapped)
-        break;
       }
     }
   };
@@ -256,6 +244,7 @@ function Home() {
       } else {
         sortByVaccinated(states_meta, states_names, key);
       }
+      console.log(states_names)
       let new_sorted_states = {};
       //if asec travel from start else in reverse
       if (key[1] === "a") {
